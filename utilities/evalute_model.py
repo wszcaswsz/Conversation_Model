@@ -6,9 +6,7 @@ import sys
 import numpy as np
 import time
 from utilities.data_helper import compute_recall_ks, str2bool,subsample_Train_idx,subsample_Dev_idx
-# import matplotlib.pyplot as plt
-# plt.style.use('ggplot')
-#import pillow
+
 
 def evalute_model(model,test_data):
     start_time = time.time()
@@ -50,27 +48,3 @@ def evaluate_random_predictor(test_sample_size):
 
 
 
-# def plot_loss(model, loss_fig_path):
-#
-#     #acc = model.history['acc']
-#     #val_acc =model.history['val_acc']
-#     loss = model.history['loss']
-#     val_loss = model.history['val_loss']
-#
-#     epochs = range(1, len(loss) + 1)
-#
-#    # plt.plot(epochs, acc, 'bo', label='Training acc')
-#     #plt.plot(epochs, val_acc, 'b', label='Validation acc')
-#     #plt.title('Training and validation accuracy')
-#     #plt.legend()
-#
-#     #plt.figure()
-#     fig = plt.figure()
-#     plt.plot(epochs, loss, 'bo', label='Training loss')
-#     plt.plot(epochs, val_loss, 'b', label='Validation loss')
-#     plt.title('Training and validation loss')
-#     plt.legend()
-#
-#     plt.savefig(loss_fig_path)
-#     plt.close(fig)
-#     #plt.show()
