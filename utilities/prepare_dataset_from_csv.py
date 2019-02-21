@@ -27,40 +27,7 @@ def build_train_set():
         label.append(int(train.loc[i].Label))
     return [str(s) for s in context], [str(s) for s in response], label
 
-# def build_prediction_set(csv_file):
-#     df = pd.read_csv(DATA_DIR + csv_file)
-#     rows = df.shape[0]
-#     context = []
-#     response = []
-#     label = []
-#     for i in range(rows):
-#         # add 10 contexts
-#         for j in range(10):
-#             context.append(df.loc[i].Context)
-#         # add ground truth
-#         response.append(df.loc[i]['Ground Truth Utterance'])
-#         # add 9 false responses
-#         response.append(df.loc[i].Distractor_0)
-#         response.append(df.loc[i].Distractor_1)
-#         response.append(df.loc[i].Distractor_2)
-#         response.append(df.loc[i].Distractor_3)
-#         response.append(df.loc[i].Distractor_4)
-#         response.append(df.loc[i].Distractor_5)
-#         response.append(df.loc[i].Distractor_6)
-#         response.append(df.loc[i].Distractor_7)
-#         response.append(df.loc[i].Distractor_8)
-#         # add labels now 1, followed by nine 0
-#         label.append(1) # ground
-#         label.append(0) # 0
-#         label.append(0) # 1
-#         label.append(0) # 2
-#         label.append(0) # 3
-#         label.append(0) # 4
-#         label.append(0) # 5
-#         label.append(0) # 6
-#         label.append(0) # 7
-#         label.append(0) # 8
-#     return [str(s) for s in context], [str(s) for s in response], label
+
 
 
 def build_prediction_set2(csv_file):   ### add all 61 template as distractor
@@ -77,13 +44,7 @@ def build_prediction_set2(csv_file):   ### add all 61 template as distractor
         for j in range(1, cols):
             context.append(df.loc[i].Context)   ## the first column is context
             response.append(df.iloc[i, j])      ## the column #1 is ground truth and rest are distractors
-            # add ground truth
-            # response.append(df.loc[i]['Ground Truth Utterance'])
-            # add 9 false responses
-            # response.append(df.loc[i].Distractor_0)
-            # response.append(df.loc[i].Distractor_1)
-            # response.append(df.loc[i].Distractor_2)
-
+            
             # add labels now 1, followed by nine 0
             if j == 1:
                 label.append(1)  # ground truth
@@ -117,9 +78,7 @@ def main():
     dev_c = tokenizer.texts_to_sequences(dev_c)
     dev_r = tokenizer.texts_to_sequences(dev_r)
 
-    #MAX_SEQUENCE_LENGTH = max([len(seq) for seq in train_c + train_r
-                                                    #+ test_c + test_r
-                                                    #+ dev_c + dev_r])
+    
     
     MAX_NB_WORDS = len(tokenizer.word_index) + 1
     word_index = tokenizer.word_index
