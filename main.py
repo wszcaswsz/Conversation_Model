@@ -3,13 +3,7 @@ from __future__ import print_function
 
 import numpy as np
 import pickle
-# from keras.models import Sequential
-# from keras.utils import np_utils
-# from keras.layers import Dense, Input, Flatten, Dropout, LSTM, Activation, Multiply,concatenate#,Merge
-# from keras.layers import Conv1D, MaxPooling1D, Embedding, merge,GlobalMaxPooling1D
-# from keras.layers.merge import concatenate
-# from keras.models import Model
-#from keras.utils.vis_utils import plot_model
+
 import time
 from utilities import my_callbacks
 import argparse
@@ -35,7 +29,6 @@ print ('python version is')
 print(sys.version)
 
 
-#  MultiFilterCNN_dualencoder_1MGPU_500epoch_EStest.h5_1550600687.5703459.h5
 
 def main():
     
@@ -51,8 +44,6 @@ def main():
     parser.add_argument('--input_dir', type=str, default='../../email_template_recommendation_code/dataset/', help='Input dir')
     parser.add_argument('--save_model', type='bool', default=True, help='Whether to save the model')
     parser.add_argument('--pretrained_model_fname', type=str, default='model_dir/dual_encoder_lstm_classifier_10KTraining.h5', help='pretrained Model filename')
-    # parser.add_argument('--model_weight', type=str, default='model/dual_encoder_lstm_classifier_5KTraining_weight.h5', help='Model weight')
-    # parser.add_argument('--model_architecture', type=str, default='model/dual_encoder_lstm_classifier_5KTraining_architecture.json', help='Model architecture')
     parser.add_argument('--model_fname', type=str, default='data/model/dual_encoder_CNN_multiFilter.h5', help='Model filename')
     parser.add_argument('--embedding_file', type=str, default='../../dual_encoder_keras_for_MLfoundation/embeddings/glove.6B.100d.txt', help='Embedding filename')
     parser.add_argument('--seed', type=int, default=1337, help='Random seed')
@@ -109,37 +100,12 @@ def main():
     print('Now indexing word vectors...')
 
     embeddings_index = load_pretrained_embedding(args.embedding_file)
-
-
-
-
-    # embeddings_index = {}
-    # f = open(args.embedding_file, encoding="utf-8")
-    # for line in f:
-    #     values = line.split()
-    #     word = values[0]
-    #     try:
-    #         coefs = np.asarray(values[1:], dtype='float32')
-    #     except ValueError:
-    #         continue
-    #     embeddings_index[word] = coefs
-    # f.close()
-    
     
 
     print("Now loading embedding matrix...")
     embedding_matrix= build_embedding_matrix(embeddings_index,MAX_NB_WORDS, word_index, emb_dim)
     print('Null word embeddings: %d' % np.sum(np.sum(embedding_matrix, axis=1) == 0))
-    # num_words = min(MAX_NB_WORDS, len(word_index)) + 1
-    # embedding_matrix = np.zeros((num_words , emb_dim))
-    # for word, i in word_index.items():
-    #     if i >= MAX_NB_WORDS:
-    #         continue
-    #     embedding_vector = embeddings_index.get(word)
-    #     if embedding_vector is not None:
-    #         # words not found in embedding index will be all-zeros.
-    #         embedding_matrix[i] = embedding_vector
-
+    
 
     print("Now building dual encoder model...")
 
@@ -158,19 +124,8 @@ def main():
         model = LSTM_encoder(emb_dim,MAX_NB_WORDS,MAX_SEQUENCE_LENGTH,embedding_matrix,args.optimizer)
 
 
-
-
-
-
-    
-
-    ## reconstruct model architecture and load weight from stored weights
-    #model =ReconstructModel_and_loadWeight(args.pretrained_model_fname)
-
     ## start the training process
     print(model.summary())
-    #Train(model, args.batch_size, args.n_epochs,)
-   # model = Train(model, args.batch_size, args.n_epochs, train_c_new, train_r_new, train_l_new, dev_c_new, dev_r_new, dev_l_new)
     if args.mode == 'train':
         print ('start training process')
         model, history = Train_withEarlyStopandModelSave(model,args.model_fname, args.loss_plot_path, args.batch_size, args.n_epochs, train_c_new, train_r_new, train_l_new, dev_c_new, dev_r_new, dev_l_new)
@@ -180,20 +135,8 @@ def main():
         loss_data= pd.DataFrame.from_dict({'train_loss':history.history['loss'],'val_loss':history.history['val_loss']})
         print (loss_data)
         loss_data.to_csv(args.loss_file_path)
-    #f_out = open(args.loss_file_path,'w')
+    
 
-
-#     val_loss = model.history['val_loss'])
-#     val_loss = model.history['val_loss']
-    #if args.save_model:
-     #   print("Now saving the model... at {}".format(args.model_fname))
-      #  model.save(args.model_fname)
-    ## evalute all test data
-    #print ('/n/n******************/n/n')
-    #print('evalute all test data')
-    #evalute_model(Model,[test_c, test_r])
-
-    ## evalute subsampled test data
 
     if args.mode in ['test','train']:
         print ('/n/n******************/n/n')
@@ -208,20 +151,7 @@ def main():
 
         write_evaluation_result(res, args.evaluation_file_path)
 
-    ## evaluate performance purely based on random predictor:
-    #evaluate_random_predictor(358)
 
-    ## plot the loss and save to figures
-    #plot_loss(history, args.loss_plot)
-
-
-
-
-
-    ## evalute all test data
-    #print ('/n/n******************/n/n')
-    #print('evalute all test data')
-    #evalute_model(model,[test_c, test_r])
 
 if __name__ == "__main__":
     main()
