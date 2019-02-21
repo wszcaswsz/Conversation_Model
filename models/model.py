@@ -119,23 +119,8 @@ def transformer_encoder(emb_dim,MAX_NB_WORDS,MAX_SEQUENCE_LENGTH,embedding_matri
     r_seq = Dropout(0.2)(r_seq)
 
 
-#     #if args.encoder_type == 'CNN':
-# #    print ('use CNN as encoder...')
-#     convs_c, convs_r= [],[]
-#     filter_sizes = [3,4,5]
-#
-#     for fsz in filter_sizes:
-#         l_conv_c, l_conv_r = Conv1D(nb_filter=128,filter_length=fsz,activation='relu')(embedded_dropout_c), Conv1D(nb_filter=128,filter_length=fsz,activation='relu')(embedded_dropout_r)
-#         l_pool_c, l_pool_r = GlobalMaxPooling1D()(l_conv_c), GlobalMaxPooling1D()(l_conv_r)
-#         convs_c.append(l_pool_c)
-#         convs_r.append(l_pool_r)
-#
-#     context_branch = concatenate(convs_c)
-#     response_branch = concatenate(convs_r)
-
-# concatenated = concatenate([context_branch, response_branch])
     concatenated = Multiply()([c_seq, r_seq])
-#concatenated = merge([context_branch, response_branch], mode='mul')
+
     out = Dense((1), activation = "sigmoid") (concatenated)
 
     model = Model([context_input, response_input], out)
@@ -177,21 +162,6 @@ def transformer_encoder_v2(emb_dim,MAX_NB_WORDS,MAX_SEQUENCE_LENGTH,embedding_ma
     r_seq = Dropout(0.2)(r_seq)
 
 
-#     #if args.encoder_type == 'CNN':
-# #    print ('use CNN as encoder...')
-#     convs_c, convs_r= [],[]
-#     filter_sizes = [3,4,5]
-#
-#     for fsz in filter_sizes:
-#         l_conv_c, l_conv_r = Conv1D(nb_filter=128,filter_length=fsz,activation='relu')(embedded_dropout_c), Conv1D(nb_filter=128,filter_length=fsz,activation='relu')(embedded_dropout_r)
-#         l_pool_c, l_pool_r = GlobalMaxPooling1D()(l_conv_c), GlobalMaxPooling1D()(l_conv_r)
-#         convs_c.append(l_pool_c)
-#         convs_r.append(l_pool_r)
-#
-#     context_branch = concatenate(convs_c)
-#     response_branch = concatenate(convs_r)
-
-# concatenated = concatenate([context_branch, response_branch])
     concatenated = Multiply()([c_seq, r_seq])
 #concatenated = merge([context_branch, response_branch], mode='mul')
     out = Dense((1), activation = "sigmoid") (concatenated)
@@ -367,62 +337,11 @@ def Train_withEarlyStopandModelSave(model,model_save_path,loss_plot_path,batch_s
                          batch_size=batch_size, epochs=n_epochs, callbacks=[es, mc,plot_losses],
                          validation_data=([dev_c_new, dev_r_new], dev_l_new), verbose=1)
 
-    #model.fit(trainX, trainy, validation_data=(testX, testy), epochs=4000, verbose=0, callbacks=[es, mc])
-    # load the saved model
-
-    # start_time = time.time()
-    # compute_recall_ks(y_pred[:,0])
-    # print("---model evaluation time takes %s seconds ---" % (time.time() - start_time))
-    #bestAcc = 0.0
-    #patience = 0
-
-    #print("\tbatch_size={}, nb_epoch={}".format(batch_size, n_epochs))
-
-    # for ep in range(1, args.n_epochs):
-    # for ep in range(1, n_epochs):
-    #
-    #     model.fit([train_c_new, train_r_new], train_l_new,
-    #                      batch_size=batch_size, epochs=n_epochs, callbacks=[histories],
-    #                      validation_data=([dev_c_new, dev_r_new], dev_l_new), verbose=1)
-    #
-    #     curAcc = histories.accs[0]
-    #     if curAcc >= bestAcc:
-    #         bestAcc = curAcc
-    #         patience = 0
-    #     else:
-    #         patience = patience + 1
-    #
-    #     # classify the test set
-    #     y_pred = model.predict([test_c_new, test_r_new])
-    #
-    #     print("Perform on test set after Epoch: " + str(ep) + "...!")
-    #     recall_k = compute_recall_ks(y_pred[:, 0])
-    #
-    #     # stop training the model when patience = 10
-    #     if patience > 10:
-    #         print("Early stopping at epoch: " + str(ep))
-    #         break
+    
     print("---Training finished, model training time takes %s seconds ---" % (time.time() - start_time))
     return model, model_history
 
 
 
 
-## keras implementation of transformer
-    #
-    #
-    #
-    # def compile(self, active_layers=999):
-    #     src_seq_input = Input(shape=(None,))
-    #     src_seq = src_seq_input
-    #     src_pos = Lambda(self.get_pos_seq)(src_seq)
-    #     if not self.src_loc_info: src_pos = None
-    #
-    #     x = self.encoder(src_seq, src_pos, active_layers=active_layers)
-    #     # x = GlobalMaxPool1D()(x) # Not sure about this layer. Just wanted to reduce dimension
-    #     x = GlobalAveragePooling1D()(x)
-    #     outp = Dense(1, activation="sigmoid")(x)
-    #
-    #     self.model = Model(inputs=src_seq_input, outputs=outp)
-    #     self.model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
