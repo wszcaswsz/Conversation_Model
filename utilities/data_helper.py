@@ -17,16 +17,7 @@ def evaluate_recall(predicted_prob, y_test, k=3):
     return num_correct/num_examples
 
 
-# def compute_recall_ks(probas):
-#     recall_k = {}
-#     for group_size in [2, 5, 10]:
-#         recall_k[group_size] = {}
-#         print ('group_size: %d' % group_size)
-#         for k in [1, 2, 5]:
-#             if k < group_size:
-#                 recall_k[group_size][k] = recall(probas, k, group_size)
-#                 print ('recall@%d' % k, recall_k[group_size][k])
-#     return recall_k
+
 
 def compute_recall_ks(probas):
     recall_k = {}
@@ -58,26 +49,6 @@ def recall(probas, k, group_size):
         if 0 in indices:
             n_correct += 1
     return float(n_correct) / (len(probas) / test_size)
-
-
-#
-# def recall_randomsampling(probas, k, group_size):
-#     test_size = 61
-#     ## this is because the test/validation data is formulated as  context, groundTruth, distractor0, distractor1, ,,,,,distractor 59, in total 61
-#     ## so every 61 row use the same context and among them row #0 is always the pair of context with ground truth
-#     n_batches = len(probas) // test_size
-#     n_correct = 0
-#     for i in range(n_batches):
-#        # batch = np.array(probas[i*test_size:(i+1)*test_size])[:group_size]
-#         batch = np.array(probas[i * test_size:(i + 1) * test_size])[:group_size]
-#         #print ('predicted probs for batch %d is : \n'%i)
-#         #print (batch)
-#         #print ('shape of batch is ')
-#         #print (batch.shape)
-#         indices = np.argpartition(batch, -k)[-k:]
-#         if 0 in indices:
-#             n_correct += 1
-#     return float(n_correct) / (len(probas) / test_size)
 
 
 
