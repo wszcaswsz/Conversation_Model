@@ -3,7 +3,7 @@ This is a neural conversation model that rank best response from a pool of candi
 You need pretrained word embedding for this repo:
 Download Glove Embeddings into embeddings directory cd embeddings wget http://nlp.stanford.edu/data/glove.840B.300d.zip unzip glove.840B.300d.zip
 
-You can use Ubuntu corpus for this repo, Download the dataset (train, test and dev): You can download it directly in format .pkl into dataset folder: These pkl files were generated using the utilities/prepare_dataset_from_csv.py script which separate the context and response from each of the train.csv, test.csv and dev.csv https://drive.google.com/file/d/1VjVzY0MqKj0b-q_KXnaHC49qCw3iDqEY/view?usp=sharing
+You can use your own chat/email exchange corpus or use Ubuntu corpus for this repo, Download the dataset (train, test and dev): You can download it directly in format .pkl into dataset folder: These pkl files were generated using the utilities/prepare_dataset_from_csv.py script which separate the context and response from each of the train.csv, test.csv and dev.csv https://drive.google.com/file/d/1VjVzY0MqKj0b-q_KXnaHC49qCw3iDqEY/view?usp=sharing
 
 Or you can download raw files in csv format from here https://github.com/rkadlec/ubuntu-ranking-dataset-creator and run the utilities/prepare_dataset_from_csv.py script by yourself. cd utilities python prepare_dataset_from_csv.py
 
